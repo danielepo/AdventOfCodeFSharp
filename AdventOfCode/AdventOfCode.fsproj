@@ -61,8 +61,10 @@
     <Content Include="day2Input.txt" />
     <Compile Include="Day3PerfectlySphericalHousesinaVacuum.fs" />
     <Content Include="Day3Input.txt" />
+    <Compile Include="Utils.fs" />
     <Compile Include="Day4TheIdealStockingStuffer.fs" />
     <Compile Include="Day5DoesntHeHaveInternElvesForThis.fs" />
+    <Content Include="Day5Input.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
