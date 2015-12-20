@@ -1,6 +1,6 @@
 ﻿module Day5DoesntHeHaveInternElvesForThis
 open Utils
-
+let (>>) f g x = g ( f(x) )
 let stringToCharList (input:string) =
     input |> List.ofSeq
 
@@ -39,5 +39,37 @@ let countGoods =
     "C:\Users\d.pozzobon\GitHubRepos\AdventOfCode\AdventOfCode\Day5Input.txt"
     |> TextFileReader
     |> Seq.map isWordGood
+    |> Seq.filter (fun x -> x)
+    |> Seq.length
+
+
+    
+
+let hasRepeated (input:string) = 
+    let rec repeats (sil:string) (remaining:string) (shiftedInput:string)=
+        if remaining.Length <= 1 then false
+        else 
+            if remaining.Contains sil then true
+            else if shiftedInput.Length < 2 then false else  
+                let newSil = shiftedInput.Substring(0,2)
+                repeats newSil (shiftedInput.Substring(2)) (shiftedInput.Substring(1))
+    if input.Length < 2 then false else
+    repeats (input.Substring(0,2)) (input.Substring(2)) (input.Substring(1)) 
+
+
+let hasRepeatedWithOneLetter (input:string) =
+    let rec repeats (remaining:string) =
+        if remaining.Length <= 2 then false
+        else 
+            let sil = remaining.Substring(0,3) |> List.ofSeq
+            if sil.[0] = sil.[2] then true else
+            repeats (remaining.Substring(1))
+    if input.Length < 2 then false else
+    repeats input
+
+let countGoods2 = 
+    "C:\Users\d.pozzobon\GitHubRepos\AdventOfCode\AdventOfCode\Day5Input.txt"
+    |> TextFileReader
+    |> Seq.map (fun x -> hasRepeated x && hasRepeatedWithOneLetter x)
     |> Seq.filter (fun x -> x)
     |> Seq.length
