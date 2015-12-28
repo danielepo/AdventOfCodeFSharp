@@ -3,7 +3,7 @@
 open Utils
 
 let n = [0..999]
-let mutable grid = Array.init n.Length (fun y -> Array.init n.Length (fun x -> false))
+let mutable grid = Array.init n.Length (fun y -> Array.init n.Length (fun x -> 0))
 
 let input = "toggle 461,550 through 564,900"
 let toggle1 = "toggle 0,0 through 0,0"
@@ -36,19 +36,19 @@ let (|Instruction|_|) (start) (input : string) =
 
 let ParseInstruction = 
     let inRange (i,j) (x:Rect) = i >= X x.TopLeft && i <= X x.BottomRight && j >= Y x.TopLeft && j<= Y x.BottomRight
-    let toOpp (r:Rect) op = [for y in n -> [for x in n -> if inRange (x,y) r then (op) else ((||) false)]]
+    let toOpp (r:Rect) op = [for y in n -> [for x in n -> if inRange (x,y) r then (op) else ((+) 0)]]
     function 
-    | Instruction "toggle" r -> toOpp r (not)
-    | Instruction "turn on" r -> toOpp r ((||) true)
-    | Instruction "turn off" r -> toOpp r ((&&) false)
+    | Instruction "toggle" r -> toOpp r ((+) 2)
+    | Instruction "turn on" r -> toOpp r ((+) 1)
+    | Instruction "turn off" r -> toOpp r (fun x -> if x > 0 then x - 1 else 0)
 
-let Apply (inst: (bool -> bool) list list) =
+let Apply (inst: (int -> int) list list) =
     for y in n do 
         for x in n do grid.[y].[x] <- inst.[y].[x] grid.[y].[x]
 
-let SumTrue (grid:bool array array)= 
+let SumTrue (grid:int array array)= 
      grid
-    |> Array.map (fun x -> x |> Array.filter (fun y -> y) |> Array.length) 
+    |> Array.map (fun x -> x |> Array.sum) 
     |> Array.sum
 
 
