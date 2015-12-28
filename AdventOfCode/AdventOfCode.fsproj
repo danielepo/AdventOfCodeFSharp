@@ -54,7 +54,6 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
-    <Compile Include="Program.fs" />
     <None Include="App.config" />
     <Compile Include="Day1NotQuiteLisp.fs" />
     <Compile Include="Day2IWasToldThereWouldBeNoMath.fs" />
@@ -65,8 +64,17 @@
     <Compile Include="Day4TheIdealStockingStuffer.fs" />
     <Compile Include="Day5DoesntHeHaveInternElvesForThis.fs" />
     <Content Include="Day5Input.txt" />
+    <Compile Include="Day6ProbablyFireHazard.fs" />
+    <Compile Include="Program.fs" />
+    <Content Include="Day6Input2.txt" />
+    <Content Include="packages.config" />
+    <Content Include="Day6Input.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FsAlg">
+      <HintPath>..\packages\FsAlg.0.5.13\lib\FsAlg.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
