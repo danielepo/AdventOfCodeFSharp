@@ -55,20 +55,12 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <None Include="App.config" />
-    <Compile Include="Day1NotQuiteLisp.fs" />
-    <Compile Include="Day2IWasToldThereWouldBeNoMath.fs" />
-    <Content Include="day2Input.txt" />
-    <Compile Include="Utils.fs" />
-    <Compile Include="Day3PerfectlySphericalHousesinaVacuum.fs" />
-    <Content Include="Day3Input.txt" />
-    <Compile Include="Day4TheIdealStockingStuffer.fs" />
-    <Compile Include="Day5DoesntHeHaveInternElvesForThis.fs" />
-    <Content Include="Day5Input.txt" />
-    <Compile Include="Day6ProbablyFireHazard.fs" />
+    <Compile Include="stars.fs" />
     <Compile Include="Program.fs" />
-    <Content Include="Day6Input2.txt" />
     <Content Include="packages.config" />
-    <Content Include="Day6Input.txt" />
+    <Content Include="day1input1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsAlg">

@@ -1,9 +1,12 @@
 ﻿// Learn more about F# at http://fsharp.net
 // See the 'F# Tutorial' project for more help.
-open Day6ProbablyFireHazard
+open Stars
 
 [<EntryPoint>]
 let main argv = 
-    let result = Run path1
-    printf "%d" result
+    
+    let day1input1 = System.IO.File.ReadAllText("./day1input1.txt")
+    
+
+    printf "%d" <| calculateCapcha day1input1
     0 // return an integer exit code
