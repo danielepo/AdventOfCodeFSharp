@@ -7,16 +7,25 @@ let calculateCapcha (input:string) =
         |> Array.map (fun x -> Int32.Parse(x.ToString()))
         |> List.ofArray
 
-    let scroll (ls:int list) =
+    let rec circularize l = seq{
+        yield! l
+        yield! circularize l
+        }
 
-        let rec runner first =
-            function
-            | x1 :: x2 :: xs -> if x1 = x2 then x1 :: (runner first (x2 :: xs)) else (runner first (x2 :: xs))
-            | x1 :: [] -> if x1 = first then x1 :: [] else []
-            | [] -> []
+    let scroll (lista1:int list) =
+        let lista2 = 
+            lista1 
+            |> circularize
+            |> Seq.skip (lista1.Length / 2)
+
+        Seq.zip (lista1 |> Seq.ofList) lista2
+        |> Seq.map (fun (x1,x2) -> if x1 = x2 then x1 else 0) 
+        |> List.ofSeq
         
-        runner ls.Head ls
-
     input  
     |> (toIntList >> scroll)
     |> List.sum
+
+
+   
+    

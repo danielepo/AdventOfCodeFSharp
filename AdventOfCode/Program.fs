@@ -8,5 +8,5 @@ let main argv =
     let day1input1 = System.IO.File.ReadAllText("./day1input1.txt")
     
 
-    printf "%d" <| calculateCapcha day1input1
+    printf "result %d\n" <| calculateCapcha day1input1
     0 // return an integer exit code
