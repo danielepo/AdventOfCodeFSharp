@@ -58,9 +58,8 @@
     <Compile Include="stars.fs" />
     <Compile Include="Program.fs" />
     <Content Include="packages.config" />
-    <Content Include="day1input1.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="day1input.txt" />
+    <Content Include="day2input.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsAlg">
