@@ -1,6 +1,6 @@
-open System.Runtime.Remoting.Metadata.W3cXsd2001
-#I "."
-
+//open System.Runtime.Remoting.Metadata.W3cXsd2001
+//#I "."
+module Stars
 open System
 open System.IO
 let calculateCapcha (input:string) =
@@ -58,3 +58,21 @@ let findTwoDivisibles (l:int []) =
 let divideThem (a,b) = a / b
 calculateChecksum findTwoDivisibles divideThem day2input |>
 printf "%d\n" 
+
+type Point = {
+    X: int
+    Y: int
+    }
+let buildSpiral n = 
+    let mutable point = { X=0 ;Y = 0}
+    let mutable lengthX = 1
+    let mutable lengthY = 1
+    let goRight p = {p with X = p.X + 1}
+    let goLeft p = {p with X = p.X - 1}
+    let goUp p = {p with X = p.Y + 1}
+    let goDown p = {p with X = p.Y - 1}
+    let mutable move = goRight
+    for x = 2 to n do
+        let p = move point
+        point <- p
+
