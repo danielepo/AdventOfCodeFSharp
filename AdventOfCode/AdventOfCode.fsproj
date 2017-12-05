@@ -55,14 +55,15 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="day1.fs" />
     <Compile Include="day2.fs" />
+    <Compile Include="day3.fs" />
     <Compile Include="day4.fs" />
+    <Compile Include="day5.fs" />
     <Content Include="packages.config" />
     <Content Include="day1input.txt" />
     <Content Include="day2input.txt" />
     <Compile Include="Program.fs" />
-    <Compile Include="day1.fs" />
-    <Compile Include="day3.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsAlg">
