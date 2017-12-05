@@ -5,8 +5,9 @@ open Stars
 [<EntryPoint>]
 let main argv = 
     
-    let day1input1 = System.IO.File.ReadAllText("./day1input1.txt")
+    //let day1input1 = System.IO.File.ReadAllText("./day1input1.txt")
     
 
-    printf "result %d\n" <| calculateCapcha day1input1
+    //printf "result %d\n" <| calculateCapcha day1input1
+//    buildSpiral 3
     0 // return an integer exit code
