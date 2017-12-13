@@ -1325,13 +1325,40 @@ let towers =
     |> List.ofArray
 
 let findTower (input:Tower list) =
-    let childs = input |> List.map (fun (x:Tower) -> x.Disc) |> List.concat
-    let towers = input |> List.map (fun (x:Tower) -> x.Name)
+    let childs = input |> List.collect (fun (x:Tower) -> x.Disc) |> Set.ofList
+    let towers = input |> List.map (fun (x:Tower) -> x.Name) |> Set.ofList
 
-    towers 
-    |> List.filter(fun t -> 
-        childs 
-        |> List.filter(fun c -> c = t) 
-        |> List.isEmpty) 
-    |> List.head
+    Set.difference towers childs 
 
+
+
+let findWeight  (input:Tower list) =
+    let saveHead (a:'a seq) =
+        if a |> Seq.length = 0 
+        then None
+        else a |> Seq.head |> Some
+    let towerName = findTower input |> List.ofSeq |> List.head 
+    let getTower name = 
+        input |> List.find (fun x -> x.Name = name)
+
+    let rec getBalancedWeight (``base``:Tower)=
+
+        let d = ``base``.Disc |> List.map (getTower >> getBalancedWeight)
+        let wSet = d |> Seq.ofList |>Seq.groupBy (fun (f,_)-> f) 
+        let sbilanciata = wSet |> Seq.filter (fun (f,s) -> s |> Seq.length = 1)  |> saveHead
+        let bilanciata = wSet |> Seq.filter (fun (f,s) -> s |> Seq.length <> 1)
+
+
+        match sbilanciata with
+        | None -> ``base``.Weight + (d |> List.sumBy(fun (f,_)->f)), ``base``.Weight 
+        | Some h -> 
+            let com = bilanciata |> Seq.head |> fst
+            let sb = sbilanciata.Value |> fst
+            let tw = sbilanciata.Value |> snd |> Seq.head |> snd
+            printf "%d\n" (tw - (sb - com))
+            tw - (sb - com), ``base``.Weight 
+
+    
+    towerName 
+    |> getTower 
+    |> getBalancedWeight 
