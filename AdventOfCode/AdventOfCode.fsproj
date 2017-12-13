@@ -62,6 +62,7 @@
     <Compile Include="day4.fs" />
     <Compile Include="day6.fs" />
     <Compile Include="day5.fs" />
+    <Compile Include="day7.fs" />
     <Compile Include="day8.fs" />
     <Content Include="packages.config" />
     <Content Include="day1input.txt" />
