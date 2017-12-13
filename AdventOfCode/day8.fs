@@ -1079,9 +1079,21 @@ let parseInput (input:string list)=
 
     let registers:Map<string,int> = Map.empty
     
+    let folder r i lastMax= 
+        printf "%A" r
+        let newRegisters = executeInstruction r i
+        let tryMax (l:int list) = if l.Length = 0 then  0 else l |> List.max
+        let maxValue = 
+            newRegisters 
+            |> Map.toList 
+            |> List.map snd 
+            |> tryMax
+        newRegisters, max maxValue lastMax
+
     input 
     |> List.map (fun x -> x.Split ' ' |> toRegInstr)
-    |> List.fold (fun r i -> executeInstruction r i) registers
+    |> List.fold (fun (r,m) i -> folder r i m) (registers, 0)
+    |> snd
     //|> Map.toList 
     //|> List.maxBy (fun (_,v) -> v)
     
