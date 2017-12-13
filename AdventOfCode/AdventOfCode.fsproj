@@ -63,11 +63,12 @@
     <Compile Include="day6.fs" />
     <Compile Include="day5.fs" />
     <Compile Include="day7.fs" />
-    <Compile Include="day8.fs" />
+    <Compile Include="day9.fs" />
     <Content Include="packages.config" />
     <Content Include="day1input.txt" />
     <Content Include="day2input.txt" />
     <Compile Include="Program.fs" />
+    <Compile Include="day8.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsAlg">
