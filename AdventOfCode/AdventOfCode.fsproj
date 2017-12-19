@@ -69,6 +69,7 @@
     <Content Include="day2input.txt" />
     <Compile Include="Program.fs" />
     <Compile Include="day8.fs" />
+    <Content Include="9.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsAlg">
