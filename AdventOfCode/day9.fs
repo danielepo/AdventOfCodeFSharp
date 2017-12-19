@@ -4,71 +4,84 @@
 //__LINE__
 module Day9
 open System
+type Parser<'a> = char list -> ('a*char list) option
+
+let map f p =
+  p >> Option.map (fun (x, rest) -> (f x), rest)
+
 type Group = Group of Group list
+
 type Garbage = unit
 
-type Parser<'a> = char list -> ('a * char list) option
-let map f (p:Parser<'a>): Parser<'b> = 
-    p >> Option.map (fun (x, rest) -> f x, rest)
+let cons x xs = x::xs
 
-let cons x y = x :: y
+let rec parseGroup: Group Parser =
+  let rec parseInner = function
+    | '}'::rest -> Some ([], rest)
+    | ','::text
+    | text ->
+        match parseGroupOrGarbage text with
+          | Some (Choice1Of2 group, rest) -> map (cons group) parseInner rest
+          | Some (Choice2Of2 _, rest)-> parseInner rest
+          | None -> None
 
-let rec parseGroup: Group Parser= 
-    let rec innerParse = 
-        function 
-        | '}'::rest -> Some ([], rest)
-        | ',':: text
-        | text ->
-            match parseGroupOrGarbate text with 
-            | Some (Choice1Of2 group,rest) -> map (cons group) innerParse rest
-            | Some (Choice2Of2 _,rest) -> innerParse rest
-            | None -> None
+  function
+  | '{'::inner -> map Group parseInner inner
+  | _ -> None
 
-    function
-    | '{' :: rest -> map Group innerParse rest
-    | _ -> None 
+and parseGarbage: Garbage Parser =
+  let rec parseInner = function
+    | '!'::_::rest -> parseInner rest
+    | '>'::rest -> Some ((), rest)
+    | _::rest -> parseInner rest
 
+  function
+  | '<'::inner -> parseInner inner
+  | _ -> None
 
-and parseGarbage: Garbage Parser=
-    let rec innerParse = 
-        function 
-        | '!'::_::rest -> innerParse rest
-        | '>'::rest -> Some ((), rest)
-        | _ -> None
+and parseGroupOrGarbage: Choice<Group, Garbage> Parser = function
+  | '{'::inner -> map Choice1Of2 parseGroup ('{'::inner)
+  | '<'::inner -> map Choice2Of2 parseGarbage ('<'::inner)
+  | _ -> None
 
-    function
-    | '<' :: rest -> (innerParse rest)
-    | _ -> None 
-
-
-and parseGroupOrGarbate: Choice<Group, Garbage> Parser= 
-    function
-    | '{'::rest -> map Choice1Of2 parseGroup <| '{'::rest
-    | '<'::rest -> map Choice2Of2 parseGarbage <| '<'::rest
-    | _ -> None
+let score group =
+  let rec scoreByLevel n (Group children) =
+    n + Seq.sumBy (scoreByLevel (n + 1)) children
 
 
+  scoreByLevel 1 group
 let path file = System.IO.Path.Combine (__SOURCE_DIRECTORY__, file)
 
 let actualInput = System.IO.File.ReadAllText <| path "./9.txt"
 
-let testInput = [|
-    "{}" // score of 1.
-    "{{{}}}" // score of 1 + 2 + 3 = 6.
-    "{{},{}}" // score of 1 + 2 + 2 = 5.
-    "{{{},{},{{}}}}" // score of 1 + 2 + 3 + 3 + 3 + 4 = 16.
-    "{<a>,<a>,<a>,<a>}" // score of 1.
-    "{{<ab>},{<ab>},{<ab>},{<ab>}}" // score of 1 + 2 + 2 + 2 + 2 = 9.
-    "{{<!!>},{<!!>},{<!!>},{<!!>}}" // score of 1 + 2 + 2 + 2 + 2 = 9.
-    "{{<a!>},{<a!>},{<a!>},{<ab>}}"// score of 1 + 2 = 3.
-|]
-let testGarbage = [|
-    "<>"
-    "<random characters>"
-    "<<<<>"
-    "<{!>}>"
-    "<!!>"
-    "<!!!>>"
-    """<{o"i!a,<{i<a>"""
-|]
 
+
+actualInput
+  |> List.ofSeq
+  |> parseGroup
+  |> Option.iter (fst >> score >> printfn "%d")
+
+
+
+
+let rec clean trash input:char list = 
+    match input, trash with
+    | '!'::_:: xs,true -> clean true xs
+    | '>' :: xs, true -> clean false xs 
+    | '<' :: xs,false -> clean true xs 
+    | _ :: xs,true -> clean true     xs 
+    | c :: xs,false ->c :: clean false    xs
+    | [], _ -> []
+
+let rec count group input =
+    match input with
+    | '{'::xs -> group + count (group + 1) xs
+    | '}' :: xs-> count (group - 1) xs
+    | _ :: xs-> count (group) xs
+    | []-> 0
+
+actualInput
+    |> List.ofSeq
+    |> clean false
+    |> count 1
+    |> ignore
